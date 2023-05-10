@@ -14,7 +14,7 @@ verifyExperiment() {
     while [ -n "$loopinfo" ]; do
 
         # get pos filepath of the measurements for the current loop
-        experimentresult=$(find "$resultpath" -name "testresults_run*$i" -print -quit)
+        experimentresult=$(find "$resultpath" -name "terminal_output_run*$i".txt -print -quit)
 
         # check existance of files
         if [ ! -f "$experimentresult" ]; then
@@ -84,7 +84,7 @@ exportExperimentResults() {
     # while we find a next loop info file do
     while [ -n "$loopinfo" ]; do
         loopvalues=""
-        # extract loop var values
+        # extract loop variables/switches values
         for value in $(jq -r 'values[]' "$loopinfo"); do
             loopvalues+="$value;"
         done
@@ -98,8 +98,6 @@ exportExperimentResults() {
             continue
         fi
 
-        ## Minimum result measurement information
-        ######
         # extract measurement
         compiletime=$(grep "Elapsed wall clock" "$runtimeinfo" | head -n 2 | tail -n 1 | cut -d ' ' -f 1)
         compilemaxRAMused=$(grep "Maximum resident" "$runtimeinfo" | head -n 2 | tail -n 1 | cut -d ' ' -f 1)
@@ -141,10 +139,26 @@ exportExperimentResults() {
         return
     fi
 
-    # create a tab separated table for pretty formating
+    # create a tab separated table for pretty formatting
     # convert .csv -> .tsv
     column -s ';' -t "$datatableShort" > "${datatableShort::-3}"tsv
     okfail ok "exported short and full results (${datatableShort::-3}tsv)"
+
+    # Add speedtest infos to summaryfile
+    {
+        echo -e "\n\nNetworking Information"
+        echo "Speedtest Info"
+        # get speedtest results
+        for node in "${NODES[@]}"; do
+            grep -hE "measured speed|Threads|total" "$RPATH/$node"/speedtest 
+        done
+        # get pingtest results
+        echo -e "\nLatency Info"
+        for node in "${NODES[@]}"; do
+            echo "Node $node statistics"
+            grep -hE "statistics|rtt" "$RPATH/$node"/pinglog
+        done
+    } >> "$SUMMARYFILE"
 
     # push to measurement data git
     repourl=$(grep "repoupload" global-variables.yml | cut -d ':' -f 2-)
@@ -155,14 +169,14 @@ exportExperimentResults() {
         GIT_SSH_COMMAND='ssh -o StrictHostKeyChecking=accept-new' git clone "${repourl// /}" git-upload
     fi
 
-    echo " pushing experiment measurement data to git repo$repourl"
+    echo "  pushing experiment measurement data to git repo$repourl"
     cd git-upload || error ${LINENO} "${FUNCNAME[0]} cd into gitrepo failed"
     {
         # a pull is not really required, but for small sizes it doesn't hurt
         git pull
         # copy from local folder to git repo folder
-        [ ! -d "${EXPORTPATH::-12}" ] && mkdir resultsMP-Slice/"${EXPORTPATH::-12}"
-        cp -r ../"$EXPORTPATH" "${EXPORTPATH::-12}"
+        [ ! -d "$EXPORTPATH" ] && mkdir -p "$EXPORTPATH"
+        cp -r ../"$EXPORTPATH" "${EXPORTPATH::-11}"
         git add . 
         git commit -a -m "script upload"
         git push 

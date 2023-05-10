@@ -22,8 +22,8 @@ checkConnection() {
     success=false
     while [ $i -lt $maxtry ] && ! $success; do
         success=true
-        echo "____ping $1 try $i" >> pinglog
-        ping -q -c 2 "$address" >> pinglog || success=false
+        echo "____ping $1 try $i" >> pinglog_external
+        ping -q -c 2 "$address" >> pinglog_external || success=false
         ((++i))
         sleep 2s
     done
@@ -34,11 +34,10 @@ checkConnection "mirror.lrz.de"
 apt update
 apt install -y automake build-essential git libboost-dev libboost-thread-dev parted \
     libntl-dev libsodium-dev libssl-dev libtool m4 python3 texinfo yasm linux-cpupower \
-    python3-pip time
+    python3-pip time iperf3
 pip3 install -U numpy
 checkConnection "github.com"
 git clone "$REPO" "$REPO_DIR"
-###checkConnection "gitlab.lrz.de"
 git clone "$REPO2" "$REPO2_DIR"
 
 # load custom htop config
@@ -52,5 +51,10 @@ cd "$REPO_DIR"
 
 # switch to fork
 git checkout experimental
+
+# adjust script to specific needs
+echo "wait" >> Scripts/split-roles-3-execute.sh
+echo "wait" >> ./Scripts/split-roles-3to4-execute.sh
+echo "wait" >> ./Scripts/split-roles-4-execute.sh
 
 echo "global setup successful"

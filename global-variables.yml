@@ -10,8 +10,8 @@ repoupload: git@github.com:chart21/sevaremeasurements.git
 ## Networking environment definitions
 #######
 
-# using yaml anchor-alias to define switch topology
-# testbedCoinbase NIC configuration
+### using yaml anchor-alias to define switch topology
+## testbedCoinbase NIC configuration
 bitcoinNIC0: &NICtestbedC eno5
 bitcoincashNIC0: *NICtestbedC
 bitcoingoldNIC0: *NICtestbedC
@@ -24,8 +24,8 @@ dogecoinNIC0: *NICtestbedC
 dogecoincashNIC0: *NICtestbedC
 dogecoingoldNIC0: *NICtestbedC
 
-# direct connection topology, circularly sorted
-# testbedKaunas NIC configuration
+### direct connection topology, clockwise circularly sorted
+## testbedKaunas NIC configuration
 raplaNIC0: enp133s0f1
 tapaNIC1: enp133s0f1
 tapaNIC0: enp130s0f0
@@ -33,7 +33,51 @@ valgaNIC1: ens5f1
 valgaNIC0: ens5f0
 raplaNIC1: enp130s0f0
 
-# testbedSpringfield NIC configuration
+## testbedCoinbase NIC configuration
+# 25G
+idexNIC0: ens7f0
+idexNIC1: ens7f1
+idexNIC2: ens4f1
+meldNIC0: ens4f1
+meldNIC1: ens7f0
+meldNIC2: ens7f1
+tinymanNIC0: ens7f0
+tinymanNIC1: ens7f1
+tinymanNIC2: ens4f1
+yieldlyNIC0: ens4f1
+yieldlyNIC1: ens7f0
+yieldlyNIC2: ens7f1
+
+### 25G
+##gardNIC0: enp194s0f0
+##goracleNIC1: enp194s0f0
+##goracleNIC0: enp193s0f1
+##zoneNIC1: enp193s0f1
+##zoneNIC0: enp194s0f0
+##gardNIC1: enp194s0f1
+algofiNIC0: enp193s0f1
+algofiNIC1: enp195s0f0
+algofiNIC2: enp195s0f1
+gardNIC0: enp195s0f0
+gardNIC1: enp195s0f1
+gardNIC2: enp193s0f1
+goracleNIC0: enp193s0f1
+goracleNIC1: enp195s0f1
+goracleNIC2: enp195s0f0
+zoneNIC0: enp195s0f1
+zoneNIC1: enp195s0f0
+zoneNIC2: enp193s0f1
+
+
+# 100G temporary indirect with gard as center node
+###gardNIC0: enp129s0f0
+###goracleNIC0: enp129s0f0
+####goracleNIC1: enp129s0f0
+####zoneNIC1: enp129s0f0
+###zoneNIC0: enp129s0f0np0
+###gardNIC1: enp129s0f1
+
+## testbedSpringfield NIC configuration
 bartNIC0: enp4s0
 homerNIC1: enp4s0
 homerNIC0: enp3s0

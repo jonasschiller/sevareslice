@@ -41,22 +41,87 @@ setQuota() {
 
 limitBandwidth() {
 
+    nodenumber=$((player+1))
+    nodemanipulate="${manipulate:nodenumber:1}"
+
+    # skip when code 7 -> do not manipulate any link
+    [ "$nodemanipulate" -eq 7 ] && return 0
+
     bandwidth=$(pos_get_variable bandwidths --from-loop)
     NIC0=$(pos_get_variable "$(hostname)"NIC0 --from-global)
     NIC1=$(pos_get_variable "$(hostname)"NIC1 --from-global) || NIC1=0
-    tc qdisc add dev "$NIC0" root tbf rate "$bandwidth"mbit burst 50kb limit 50kb
-    # check network topology - for directly connected hosts:
-    [ "$NIC1" != 0 ] && tc qdisc add dev "$NIC1" root tbf rate "$bandwidth"mbit burst 50kb limit 50kb
+    NIC2=$(pos_get_variable "$(hostname)"NIC2 --from-global) || NIC2=0
+
+    # three interconnected nodes
+    if [ "$partysize" -eq 3 ]; then
+        # the code to active NIC0 is 0 and 2, exclude 1 to match
+        [ "$nodemanipulate" -ne 1 ] &&
+            tc qdisc add dev "$NIC0" root tbf rate "$bandwidth"mbit burst "$bandwidth"kb limit "$bandwidth"kb
+        # the code to active NIC1 is 1 and 2, exclude 0 to match
+        [ "$NIC1" != 0 ] && [ "$nodemanipulate" -ne 0 ] &&
+            tc qdisc add dev "$NIC1" root tbf rate "$bandwidth"mbit burst "$bandwidth"kb limit "$bandwidth"kb
+
+    # four interconnected nodes
+    elif [ "$partysize" -eq 4 ]; then
+        NIC0codes=( 0 3 4 6 )
+        NIC1codes=( 1 3 5 6 )
+        NIC2codes=( 2 4 5 6 )
+
+        [[ ${NIC0codes[*]} =~ $nodemanipulate ]] &&
+            tc qdisc add dev "$NIC0" root tbf rate "$bandwidth"mbit burst "$bandwidth"kb limit "$bandwidth"kb
+        [ "$NIC1" != 0 ] && [[ ${NIC1codes[*]} =~ ${nodemanipulate} ]] &&
+            tc qdisc add dev "$NIC1" root tbf rate "$bandwidth"mbit burst "$bandwidth"kb limit "$bandwidth"kb
+        [ "$NIC2" != 0 ] && [[ ${NIC2codes[*]} =~ ${nodemanipulate} ]] &&
+            tc qdisc add dev "$NIC2" root tbf rate "$bandwidth"mbit burst "$bandwidth"kb limit "$bandwidth"kb
+
+    # one NIC topology
+    else
+        tc qdisc add dev "$NIC0" root tbf rate "$bandwidth"mbit burst "$bandwidth"kb limit "$bandwidth"kb
+    fi
+
     return 0
 }
 
 setLatency() {
 
+    nodenumber=$((player+1))
+    nodemanipulate="${manipulate:nodenumber:1}"
+
+    # skip when code 7 -> do not manipulate any link
+    [ "$nodemanipulate" -eq 7 ] && return 0
+
     latency=$(pos_get_variable latencies --from-loop)
     NIC0=$(pos_get_variable "$(hostname)"NIC0 --from-global)
     NIC1=$(pos_get_variable "$(hostname)"NIC1 --from-global) || NIC1=0
-    tc qdisc add dev "$NIC0" root netem delay "$latency"ms
-    [ "$NIC1" != 0 ] && tc qdisc add dev "$NIC1" root netem delay "$latency"ms
+    NIC2=$(pos_get_variable "$(hostname)"NIC2 --from-global) || NIC2=0
+
+    # three interconnected nodes
+    if [ "$partysize" -eq 3 ]; then
+        # the code to active NIC0 is 0 and 2, exclude 1 to match
+        [ "$nodemanipulate" -ne 1 ] &&
+            tc qdisc add dev "$NIC0" root netem delay "$latency"ms
+        # the code to active NIC1 is 1 and 2, exclude 0 to match
+        [ "$NIC1" != 0 ] && [ "$nodemanipulate" -ne 0 ] &&
+            tc qdisc add dev "$NIC1" root netem delay "$latency"ms
+
+    # four interconnected nodes
+    elif [ "$partysize" -eq 4 ]; then
+        NIC0codes=( 0 3 4 6 )
+        NIC1codes=( 1 3 5 6 )
+        NIC2codes=( 2 4 5 6 )
+
+        [[ ${NIC0codes[*]} =~ $nodemanipulate ]] &&
+            tc qdisc add dev "$NIC0" root netem delay "$latency"ms
+        [ "$NIC1" != 0 ] && [[ ${NIC1codes[*]} =~ ${nodemanipulate} ]] &&
+            tc qdisc add dev "$NIC1" root netem delay "$latency"ms
+        [ "$NIC2" != 0 ] && [[ ${NIC2codes[*]} =~ ${nodemanipulate} ]] &&
+            tc qdisc add dev "$NIC2" root netem delay "$latency"ms
+
+    # one NIC topology
+    else
+        tc qdisc add dev "$NIC0" root tbf rate "$bandwidth"mbit burst "$bandwidth"kb limit "$bandwidth"kb
+    fi
+
     return 0
 }
 
@@ -67,8 +132,10 @@ setPacketdrop() {
     # for 3 interconnected hosts topologies
     NIC0=$(pos_get_variable "$(hostname)"NIC0 --from-global)
     NIC1=$(pos_get_variable "$(hostname)"NIC1 --from-global) || NIC1=0
+    NIC2=$(pos_get_variable "$(hostname)"NIC2 --from-global) || NIC2=0
     tc qdisc add dev "$NIC0" root netem loss "$packetdrop"%
     [ "$NIC1" != 0 ] && tc qdisc add dev "$NIC1" root netem loss "$packetdrop"%
+    [ "$NIC2" != 0 ] && tc qdisc add dev "$NIC2" root netem loss "$packetdrop"%
     return 0
 }
 
@@ -88,11 +155,13 @@ setLatencyBandwidth() {
 
     NIC0=$(pos_get_variable "$(hostname)"NIC0 --from-global)
     NIC1=$(pos_get_variable "$(hostname)"NIC1 --from-global) || NIC1=0
+    NIC2=$(pos_get_variable "$(hostname)"NIC2 --from-global) || NIC2=0
 
     tc qdisc add dev "$NIC0" root tbf rate "$bandwidth"mbit latency "$latency"ms burst 50kb
     # check if switch topology (bc in this case only 1 interface pro host)
-    # for 3 interconnected hosts topologies
+    # for interconnected hosts topologies
     [ "$NIC1" != 0 ] && tc qdisc add dev "$NIC1" root tbf rate "$bandwidth"mbit latency "$latency"ms burst 50kb
+    [ "$NIC2" != 0 ] && tc qdisc add dev "$NIC2" root tbf rate "$bandwidth"mbit latency "$latency"ms burst 50kb
     return 0
 }
 
@@ -102,13 +171,16 @@ setBandwidthPacketdrop() {
 
     NIC0=$(pos_get_variable "$(hostname)"NIC0 --from-global)
     NIC1=$(pos_get_variable "$(hostname)"NIC1 --from-global) || NIC1=0
+    NIC2=$(pos_get_variable "$(hostname)"NIC2 --from-global) || NIC2=0
 
     tc qdisc add dev "$NIC0" root handle 1:0 netem loss "$packetdrop"%
     tc qdisc add dev "$NIC0" parent 1:1 handle 10: tbf rate "$bandwidth"mbit burst 50kb limit 50kb
     # check if switch topology (bc in this case only 1 interface pro host)
-    # for 3 interconnected hosts topologies
+    # for interconnected hosts topologies
     [ "$NIC1" != 0 ] && tc qdisc add dev "$NIC1" root handle 1:0 netem loss "$packetdrop"%
     [ "$NIC1" != 0 ] && tc qdisc add dev "$NIC1" parent 1:1 handle 10: tbf rate "$bandwidth"mbit burst 50kb limit 50kb
+    [ "$NIC2" != 0 ] && tc qdisc add dev "$NIC2" root handle 1:0 netem loss "$packetdrop"%
+    [ "$NIC2" != 0 ] && tc qdisc add dev "$NIC2" parent 1:1 handle 10: tbf rate "$bandwidth"mbit burst 50kb limit 50kb
     return 0
 }
 
@@ -118,11 +190,13 @@ setPacketdropLatency() {
 
     NIC0=$(pos_get_variable "$(hostname)"NIC0 --from-global)
     NIC1=$(pos_get_variable "$(hostname)"NIC1 --from-global) || NIC1=0
+    NIC2=$(pos_get_variable "$(hostname)"NIC2 --from-global) || NIC2=0
 
     tc qdisc add dev "$NIC0" root netem delay "$latency"ms loss "$packetdrop"%
     # check if switch topology (bc in this case only 1 interface pro host)
-    # for 3 interconnected hosts topologies
+    # for interconnected hosts topologies
     [ "$NIC1" != 0 ] && tc qdisc add dev "$NIC1" root netem delay "$latency"ms loss "$packetdrop"%
+    [ "$NIC2" != 0 ] && tc qdisc add dev "$NIC2" root netem delay "$latency"ms loss "$packetdrop"%
     return 0
 }
 
@@ -152,8 +226,43 @@ unlimitRAM() {
 
 resetTrafficControl() {
 
-    tc qdisc delete dev "$NIC0" root
-    [ "$NIC1" != 0 ] && tc qdisc delete dev "$NIC1" root
+    nodenumber=$((player+1))
+    nodemanipulate="${manipulate:nodenumber:1}"
+
+    # skip when code 7 -> do not manipulate any link
+    [ "$nodemanipulate" -eq 7 ] && return 0
+
+    NIC0=$(pos_get_variable "$(hostname)"NIC0 --from-global)
+    NIC1=$(pos_get_variable "$(hostname)"NIC1 --from-global) || NIC1=0
+    NIC2=$(pos_get_variable "$(hostname)"NIC2 --from-global) || NIC2=0
+
+    # three interconnected nodes
+    if [ "$partysize" -eq 3 ]; then
+        # the code to active NIC0 is 0 and 2, exclude 1 to match
+        [ "$nodemanipulate" -ne 1 ] &&
+            tc qdisc delete dev "$NIC0" root
+        # the code to active NIC1 is 1 and 2, exclude 0 to match
+        [ "$NIC1" != 0 ] && [ "$nodemanipulate" -ne 0 ] &&
+            tc qdisc delete dev "$NIC1" root
+
+    # four interconnected nodes
+    elif [ "$partysize" -eq 4 ]; then
+        NIC0codes=( 0 3 4 6 )
+        NIC1codes=( 1 3 5 6 )
+        NIC2codes=( 2 4 5 6 )
+
+        [[ ${NIC0codes[*]} =~ $nodemanipulate ]] &&
+            tc qdisc delete dev "$NIC0" root
+        [ "$NIC1" != 0 ] && [[ ${NIC1codes[*]} =~ ${nodemanipulate} ]] &&
+            tc qdisc delete dev "$NIC1" root
+        [ "$NIC2" != 0 ] && [[ ${NIC2codes[*]} =~ ${nodemanipulate} ]] &&
+            tc qdisc delete dev "$NIC2" root
+
+    # one NIC topology
+    else
+        tc qdisc add dev "$NIC0" root tbf rate "$bandwidth"mbit burst "$bandwidth"kb limit "$bandwidth"kb
+    fi
+
     return 0
 }
 

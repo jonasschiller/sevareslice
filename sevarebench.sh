@@ -5,7 +5,6 @@
 # 
 
 source helpers/style_helper.sh
-source protocols.sh
 source helpers/parameters.sh
 source helpers/trap_helper.sh
 source helpers/pos_helper.sh
@@ -44,10 +43,8 @@ runExperiment
 sleep 2 && echo " ...waiting for experiment"
 for pid in "${PIDS[@]}"; do
     # and error on the testnodes can be caught here
-    wait "$pid" || getlastoutput
+    wait "$pid" || getlastoutput $?
 done
 echo "  done"
-
-
 
 RUNSTATUS="${Green}completed${Stop}"
