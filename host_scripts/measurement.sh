@@ -44,9 +44,9 @@ touch testresults
 cd "$REPO_DIR"
 
 # different split role script, different ip definition...
-if [ "$protocol" -lt 7 ]; then
+if [ "$splitroles" -lt 2 ]; then
     # define ip addresses of the other party members
-    if [ "$protocol" -eq 0 ]; then
+    if [ "$protocol" -lt 7 ]; then
         [ "$player" -eq 0 ] && ipA="$network".3 && ipB="$network".4
         [ "$player" -eq 1 ] && ipA="$network".2 && ipB="$network".4
         [ "$player" -eq 2 ] && ipA="$network".2 && ipB="$network".3
