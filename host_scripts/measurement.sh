@@ -44,11 +44,18 @@ touch testresults
 cd "$REPO_DIR"
 
 # different split role script, different ip definition...
-if [ "$splitroles" -lt 2 ]; then
+if [ "$splitroles" -lt 7 ]; then
     # define ip addresses of the other party members
-    [ "$player" -eq 0 ] && ipA="$network".3 && ipB="$network".4
-    [ "$player" -eq 1 ] && ipA="$network".2 && ipB="$network".4
-    [ "$player" -eq 2 ] && ipA="$network".2 && ipB="$network".3
+    if [ "$protocol" -eq 0 ]; then
+        [ "$player" -eq 0 ] && ipA="$network".3 && ipB="$network".4
+        [ "$player" -eq 1 ] && ipA="$network".2 && ipB="$network".4
+        [ "$player" -eq 2 ] && ipA="$network".2 && ipB="$network".3
+    else
+        [ "$player" -eq 0 ] && ipA="$network".3 && ipB="$network".4 && ipC="$network".5
+        [ "$player" -eq 1 ] && ipA="$network".2 && ipB="$network".4 && ipC="$network".5
+        [ "$player" -eq 2 ] && ipA="$network".2 && ipB="$network".3 && ipC="$network".5
+        [ "$player" -eq 3 ] && ipA="$network".2 && ipB="$network".3 && ipC="$network".4
+    fi
 else
     # define all ips
     ipA="$network".2
@@ -127,7 +134,7 @@ pos_sync --timeout 300
 
 # run the SMC protocol
                               # skip 4th node here
-if [ "$splitroles" -eq 0 ] && [ "$player" -lt 3 ]; then
+if [ "$splitroles" -eq 0 ] && [ "$player" -lt 3 ] && [ "$protocol" -lt 7 ]; then
     /bin/time -f "$timerf" timeout 420s ./search-P"$player".o "$ipA" "$ipB" &>> testresults || success=false
                                 # skip 4th node here
 elif [ "$splitroles" -eq 1 ] && [ "$player" -lt 3 ]; then
@@ -136,6 +143,8 @@ elif [ "$splitroles" -eq 2 ]; then
     /bin/time -f "$timerf" timeout 420s ./Scripts/split-roles-3to4-execute.sh -p "$player" -a "$ipA" -b "$ipB" -c "$ipC" -d "$ipD" &>> testresults || success=false
 elif [ "$splitroles" -eq 3 ]; then
     /bin/time -f "$timerf" timeout 420s ./Scripts/split-roles-4-execute.sh -p "$player" -a "$ipA" -b "$ipB" -c "$ipC" -d "$ipD" &>> testresults || success=false
+elif [ "$splitroles" -eq 0 ] && [ "$protocol" -gt 6 ]; then
+    /bin/time -f "$timerf" timeout 420s ./search-P"$player".o "$ipA" "$ipB" "$ipC" &>> testresults || success=false
 fi
 
 # divide external runtime x*j
