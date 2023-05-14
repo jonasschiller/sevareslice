@@ -176,7 +176,7 @@ setParameters() {
     LONG+=,nodes:,input:,measureram,cpu:,cpuquota:,freq:,ram:,swap:
     LONG+=,config:,latency:,bandwidth:,packetdrop:,help,dtype:,preproc:
     LONG+=,split:,packbool:,optshare:,ssl:,threads:,manipulate:,function:
-    LONG+=,txbuffer:,rxbuffer:,verifybuffer
+    LONG+=,txbuffer:,rxbuffer:,verifybuffer:
 
     PARSED=$(getopt --options ${SHORT} \
                     --longoptions ${LONG} \
