@@ -41,6 +41,7 @@ help() {
     echo "     --ssl            activate/deactivate SSL encryption"
     echo "     --function       Function Identifier (0: Search, 2: AND, ...)"
     # variables
+    echo "     --verifyBuffer   Number of gates to buffer before hashing (malicious protocols)"
     echo "     --threads        Number of parallel processes to use"
     echo "     --txbuffer       Number of gates to buffer until sending them to the receiving party"
     echo "     --rxbuffer       Number of messages to buffer until processing"
@@ -140,6 +141,7 @@ THREADS=( 1 )
 FUNCTION=( 0 )
 TXBUFFER=( 0 )
 RXBUFFER=( 0 )
+VERIFYBUFFER=( 0 )
 manipulate="6666"
 
 INPUTS=( 4096 )
@@ -174,7 +176,7 @@ setParameters() {
     LONG+=,nodes:,input:,measureram,cpu:,cpuquota:,freq:,ram:,swap:
     LONG+=,config:,latency:,bandwidth:,packetdrop:,help,dtype:,preproc:
     LONG+=,split:,packbool:,optshare:,ssl:,threads:,manipulate:,function:
-    LONG+=,txbuffer:,rxbuffer:
+    LONG+=,txbuffer:,rxbuffer:,verifybuffer
 
     PARSED=$(getopt --options ${SHORT} \
                     --longoptions ${LONG} \
@@ -243,6 +245,9 @@ setParameters() {
             --rxbuffer)
                 setArray RXBUFFER "$2"
                 shift;;
+            --verifybuffer)
+                setArray VERIFYBUFFER "$2"
+                shift;;
             --manipulate)
                 manipulate="$2"
                 shift;;
@@ -305,7 +310,7 @@ setParameters() {
     rm -f "$loopvarpath"
     # Config Vars
     configvars=( OPTSHARE PACKBOOL SPLITROLES PROTOCOL PREPROCESS DATATYPE )
-    configvars+=( SSL THREADS FUNCTION TXBUFFER RXBUFFER )
+    configvars+=( SSL THREADS FUNCTION TXBUFFER RXBUFFER VERIFYBUFFER)
     for type in "${configvars[@]}"; do
         declare -n ttypes="${type}"
         parameters="${ttypes[*]}"
@@ -346,6 +351,7 @@ setParameters() {
         echo "    Threads: ${THREADS[*]}"
         echo "    txBuffer: ${TXBUFFER[*]}"
         echo "    rxBuffer: ${RXBUFFER[*]}"
+        echo "    verifyBuffer: ${VERIFYBUFFER[*]}"
         [ "$manipulate" != "6666" ] && echo "    manipulate: $manipulate"
         echo "    Testtypes:"
         for type in "${TTYPES[@]}"; do
