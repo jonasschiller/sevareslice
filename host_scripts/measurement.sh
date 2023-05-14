@@ -171,7 +171,7 @@ if [ "$splitroles" -gt 0 ] || [ "$threads" -gt 1 ]; then
     echo "Time measured to initialize program: ${average}s" &>> testresults
         
     if [ "$preprocess" -eq 1 ]; then
-        sum=$(grep "preprocessing chrono" testresults | cut -d 's' -f 4 | awk '{print $6}' | paste -s -d+ | bc)
+        sum=$(grep "preprocessing chrono" testresults | cut -d 's' -f 4 | awk '{print $3}' | paste -s -d+ | bc)
         average=$(echo "scale=6;$sum / $divisor" | bc -l)
         echo "Time measured to perform preprocessing chrono: ${average}s" &>> testresults
     fi
