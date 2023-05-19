@@ -12,7 +12,7 @@ import re
 import textwrap
 import glob
 
-colors = ['blue', 'red', 'orange', 'green', 'cyan', 'black']
+colors = ['blue', 'red', 'orange', 'green', 'cyan', 'black', 'brown', 'magenta', 'teal', 'violet', 'olive', 'lime', 'gray', 'pink']
 nodehardware = {}
 nodehardware.update({node: "Intel D-1518(2.2GHz) 32GiB 1Gbits" for node in ["dogecoin", "bitcoin", "ether", "todd", "rod", "ned"]})
 nodehardware.update({node: "AMD 7543(2.8GHz) 512GiB 25Gbits" for node in ["algofi", "gard", "goracle", "zone"]})
