@@ -100,9 +100,10 @@ for i in range(len(header)):
     for j in range(len(switch_indexes)):
         if header[i] == switches_names[j]:
             switch_indexes[j] = i
-
-    if header[i] == "runtime_chrono(s)":  # Name from the table
+    if header[i] == "runtime_external(s)":  # Name from the table
         runtime_index = i
+    # if header[i] == "runtime_chrono(s)":  # Name from the table
+    #     runtime_index = i
     elif header[i] == "protocol":  # Name from the table
         protocol_index = i
     # Sorting index
