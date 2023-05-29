@@ -166,14 +166,18 @@ if [ "$splitroles" -gt 0 ] || [ "$threads" -gt 1 ]; then
     [ "$splitroles" -eq 2 ] && divisor=$((24*24*threads*threads)) && divisorExt=$((24*threads))
     [ "$splitroles" -eq 3 ] && divisor=$((24*24*threads*threads)) && divisorExt=$((24*threads))
 
-    sum=$(grep "measured to initialize program" testresults | cut -d 's' -f 2 | awk '{print $5}' | paste -s -d+ | bc)
-    average=$(echo "scale=6;$sum / $divisor" | bc -l)
-    echo "Time measured to initialize program: ${average}s" &>> testresults
-        
+    # sum=$(grep "measured to initialize program" testresults | cut -d 's' -f 2 | awk '{print $5}' | paste -s -d+ | bc)
+    # average=$(echo "scale=6;$sum / $divisor" | bc -l)
+    # echo "Time measured to initialize program: ${average}s" &>> testresults
+       max=$(grep "measured to initialize program" testresults | cut -d 's' -f 2 | awk '{print $5}' | sort -nr | head -1) 
+    echo "Time measured to initialize program: ${max}s" &>> testresults
+
     if [ "$preprocess" -eq 1 ]; then
-        sum=$(grep "preprocessing chrono" testresults | cut -d 's' -f 4 | awk '{print $3}' | paste -s -d+ | bc)
-        average=$(echo "scale=6;$sum / $divisor" | bc -l)
-        echo "Time measured to perform preprocessing chrono: ${average}s" &>> testresults
+        # sum=$(grep "preprocessing chrono" testresults | cut -d 's' -f 4 | awk '{print $3}' | paste -s -d+ | bc)
+        # average=$(echo "scale=6;$sum / $divisor" | bc -l)
+    # echo "Time measured to perform preprocessing chrono: ${average}s" &>> testresults
+    max=$(grep "preprocessing chrono" testresults | cut -d 's' -f 4 | awk '{print $3}' | sort -nr | head -1) 
+    echo "Time measured to perform preprocessing chrono: ${max}s" &>> testresults
     fi
 
     sum=$(grep "computation clock" testresults | cut -d 's' -f 2 | awk '{print $6}' | paste -s -d+ | bc)
@@ -184,9 +188,11 @@ if [ "$splitroles" -gt 0 ] || [ "$threads" -gt 1 ]; then
     average=$(echo "scale=6;$sum / $divisor" | bc -l)
     echo "Time measured to perform computation getTime: ${average}s" &>> testresults
 
-    sum=$(grep "computation chrono" testresults | cut -d 's' -f 2 | awk '{print $6}' | paste -s -d+ | bc)
-    average=$(echo "scale=6;$sum / $divisor" | bc -l)
-    echo "Time measured to perform computation chrono: ${average}s" &>> testresults
+max=$(grep "computation chrono" testresults | cut -d 's' -f 2 | awk '{print $6}' | sort -nr | head -1)
+    echo "Time measured to perform computation chrono: ${max}s" &>> testresults
+# sum=$(grep "computation chrono" testresults | cut -d 's' -f 2 | awk '{print $6}' | paste -s -d+ | bc)
+    # average=$(echo "scale=6;$sum / $divisor" | bc -l)
+    # echo "Time measured to perform computation chrono: ${average}s" &>> testresults
 
     runtimeext=$(grep "Elapsed wall clock" testresults | tail -n 1 | cut -d ' ' -f 1)
     average=$(echo "scale=6;$runtimeext / $divisorExt" | bc -l)
