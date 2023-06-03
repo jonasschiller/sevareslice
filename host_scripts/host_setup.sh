@@ -31,7 +31,7 @@ checkConnection() {
 }
 
 checkConnection "mirror.lrz.de"
-echo 'unattended-upgrades unattended-upgrades/enable_auto_updates boolean true' | debconf-set-selections
+echo 'unattended-upgrades unattended-upgrades/enable_auto_updates boolean false' | debconf-set-selections
 export DEBIAN_FRONTEND=noninteractive
 apt update
 apt install -y automake build-essential git libboost-dev libboost-thread-dev parted \
@@ -40,12 +40,17 @@ apt install -y automake build-essential git libboost-dev libboost-thread-dev par
     software-properties-common
 echo 'deb http://deb.debian.org/debian testing main' > /etc/apt/sources.list.d/testing.list
 apt update -y
-wget https://apt.llvm.org/llvm.sh
-chmod +x llvm.sh
-./llvm.sh -y 15
+# wget https://apt.llvm.org/llvm.sh
+# chmod +x llvm.sh
+# ./llvm.sh -y 15
 # apt install -y clang-15 gcc-12 g++-12
 # apt install -y gcc-12 g++-12
-
+wget https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.4/clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz
+tar -xvf clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz
+mv clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04 /usr/local/llvm-16
+export PATH="/usr/local/llvm-16/bin:$PATH"
+export LD_LIBRARY_PATH="/usr/local/llvm-16/lib:$LD_LIBRARY_PATH"
+source ~/.bashrc
 
 pip3 install -U numpy
 checkConnection "github.com"
