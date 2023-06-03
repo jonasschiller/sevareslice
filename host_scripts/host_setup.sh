@@ -34,7 +34,15 @@ checkConnection "mirror.lrz.de"
 apt update
 apt install -y automake build-essential git libboost-dev libboost-thread-dev parted \
     libntl-dev libsodium-dev libssl-dev libtool m4 python3 texinfo yasm linux-cpupower \
-    python3-pip time iperf3
+    python3-pip time iperf3 \
+    software-properties-common
+echo 'deb http://deb.debian.org/debian testing main' > /etc/apt/sources.list.d/testing.list
+wget https://apt.llvm.org/llvm.sh
+chmod +x llvm.sh
+./llvm.sh -y 17
+apt install -y clang-17 gcc-12 g++-12
+
+
 pip3 install -U numpy
 checkConnection "github.com"
 git clone "$REPO" "$REPO_DIR"

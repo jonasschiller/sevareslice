@@ -108,7 +108,7 @@ def genTex(tex_name, exp_prefix, plots, name, constellation, datatypemode=0):
             divisor = plots[g].split("/")[1][1:]
             # this is for the special case where x axis shows the datatype bits, need to divide each y value by the x value
             divisor = divisor if divisor != "all" else r"\thisrowno{0}"
-            dtypeNorm =  r" [y expr=\thisrowno{1} / " + divisor + "] "
+            dtypeNorm =  r" [y expr= 0.01 / (\thisrowno{1} / " + divisor + ")] "
             indentor(file, 3, r"\addplot[mark=|, thick, color=" + colors[g] + "] table" + dtypeNorm + " {" + plotpath + "};")
         
         mode = 1 if datatypemode else 0
