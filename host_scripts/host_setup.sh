@@ -48,8 +48,8 @@ apt install -y gcc-12 g++-12
 wget https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.4/clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz
 tar -xvf clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz
 mv clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04 /usr/local/llvm-16
-echo 'export PATH="/usr/local/llvm-13/bin:$PATH"' >> ~/.bashrc
-echo 'export LD_LIBRARY_PATH="/usr/local/llvm-13/lib:$LD_LIBRARY_PATH"' >> ~/.bashrc
+echo 'export PATH="/usr/local/llvm-16/bin:$PATH"' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH="/usr/local/llvm-16/lib:$LD_LIBRARY_PATH"' >> ~/.bashrc
 source ~/.bashrc
 
 pip3 install -U numpy
