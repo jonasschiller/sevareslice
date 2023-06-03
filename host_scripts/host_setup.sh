@@ -44,7 +44,7 @@ apt update -y
 # chmod +x llvm.sh
 # ./llvm.sh -y 15
 # apt install -y clang-15 gcc-12 g++-12
-# apt install -y gcc-12 g++-12
+apt install -y gcc-12 g++-12
 wget https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.4/clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz
 tar -xvf clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz
 mv clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04 /usr/local/llvm-16
