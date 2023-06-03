@@ -37,6 +37,7 @@ apt install -y automake build-essential git libboost-dev libboost-thread-dev par
     python3-pip time iperf3 \
     software-properties-common
 echo 'deb http://deb.debian.org/debian testing main' > /etc/apt/sources.list.d/testing.list
+apt update -y
 # wget https://apt.llvm.org/llvm.sh
 # chmod +x llvm.sh
 # ./llvm.sh -y 17
