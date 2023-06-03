@@ -31,7 +31,7 @@ checkConnection() {
 }
 
 checkConnection "mirror.lrz.de"
-echo 'unattended-upgrades unattended-upgrades/enable_auto_updates boolean false' | debconf-set-selections
+echo 'unattended-upgrades unattended-upgrades/enable_auto_updates boolean true' | debconf-set-selections
 export DEBIAN_FRONTEND=noninteractive
 apt update
 apt install -y automake build-essential git libboost-dev libboost-thread-dev parted \
