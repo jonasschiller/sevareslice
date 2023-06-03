@@ -31,7 +31,8 @@ checkConnection() {
 }
 
 checkConnection "mirror.lrz.de"
-export DEBIAN_FRONTEND=noninteractive
+echo 'unattended-upgrades unattended-upgrades/enable_auto_updates boolean false' | debconf-set-selections
+# export DEBIAN_FRONTEND=noninteractive
 apt update
 apt install -y automake build-essential git libboost-dev libboost-thread-dev parted \
     libntl-dev libsodium-dev libssl-dev libtool m4 python3 texinfo yasm linux-cpupower \
