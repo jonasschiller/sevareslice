@@ -38,12 +38,12 @@ apt install -y automake build-essential git libboost-dev libboost-thread-dev par
     libntl-dev libsodium-dev libssl-dev libtool m4 python3 texinfo yasm linux-cpupower \
     python3-pip time iperf3 \
     software-properties-common
-echo 'deb http://deb.debian.org/debian testing main' > /etc/apt/sources.list.d/testing.list
-apt update -y
-wget https://apt.llvm.org/llvm.sh
-chmod +x llvm.sh
-./llvm.sh -y 17
-apt install -y clang-15 gcc-12 g++-12
+# echo 'deb http://deb.debian.org/debian testing main' > /etc/apt/sources.list.d/testing.list
+# apt update -y
+# wget https://apt.llvm.org/llvm.sh
+# chmod +x llvm.sh
+# ./llvm.sh -y 17
+# apt install -y clang-15 gcc-12 g++-12
 # apt install -y gcc-12 g++-12
 
 
