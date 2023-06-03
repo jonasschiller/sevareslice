@@ -28,6 +28,7 @@ fun=$(pos_get_variable function --from-loop)
 txbuffer=$(pos_get_variable txbuffer --from-loop)
 rxbuffer=$(pos_get_variable rxbuffer --from-loop)
 verifybuffer=$(pos_get_variable verifybuffer --from-loop)
+comp="clang++-17"
 
 timerf="%M (Maximum resident set size in kbytes)\n\
 %e (Elapsed wall clock time in seconds)\n\
@@ -66,23 +67,23 @@ else
 fi
 
 {
-    echo "./Scripts/config.sh -p $player -n $size -d $datatype -s $protocol -e $preprocess -h $ssl"
+    echo "./Scripts/config.sh -p $player -n $size -d $datatype -s $protocol -e $preprocess -h $ssl -x $comp"
 
     # set config and compile experiment
     if [ "$splitroles" -eq 0 ]; then
-        /bin/time -f "$timerf" ./Scripts/config.sh -p "$player" -n "$size" -d "$datatype" \
+        /bin/time -f "$timerf" ./Scripts/config.sh -p "$player" -n "$size" -d "$datatype" -x "$comp" \
             -s "$protocol" -e "$preprocess" -c "$packbool" -o "$optshare" -h "$ssl" -b 25000 \
             -j "$threads" -f "$fun" -y "$txbuffer" -z "$rxbuffer" -m "$verifybuffer"
     else
         # with splitroles active, "-p 3" would through error. Omit -p as unneeded
-        /bin/time -f "$timerf" ./Scripts/config.sh -n "$size" -d "$datatype" \
+        /bin/time -f "$timerf" ./Scripts/config.sh -n "$size" -d "$datatype" -x "$comp" \
             -s "$protocol" -e "$preprocess" -c "$packbool" -o "$optshare" -h "$ssl" -b 25000 \
             -j "$threads" -f "$fun" -y "$txbuffer" -z "$rxbuffer" -m "$verifybuffer"
     fi
     
-    [ "$splitroles" -eq 1 ] && ./Scripts/split-roles-3-compile.sh -p "$player" -a "$ipA" -b "$ipB"
-    [ "$splitroles" -eq 2 ] && ./Scripts/split-roles-3to4-compile.sh -p "$player" -a "$ipA" -b "$ipB" -c "$ipC" -d "$ipD"
-    [ "$splitroles" -eq 3 ] && ./Scripts/split-roles-4-compile.sh -p "$player" -a "$ipA" -b "$ipB" -c "$ipC" -d "$ipD"
+    [ "$splitroles" -eq 1 ] && ./Scripts/split-roles-3-compile.sh -p "$player" -a "$ipA" -b "$ipB" -x "$comp"
+    [ "$splitroles" -eq 2 ] && ./Scripts/split-roles-3to4-compile.sh -p "$player" -a "$ipA" -b "$ipB" -c "$ipC" -d "$ipD" -x "$comp"
+    [ "$splitroles" -eq 3 ] && ./Scripts/split-roles-4-compile.sh -p "$player" -a "$ipA" -b "$ipB" -c "$ipC" -d "$ipD" -x "$comp"
     
     echo "$(du -BM search-P* | cut -d 'M' -f 1 | head -n 1) (Binary file size in MiB)"
 
