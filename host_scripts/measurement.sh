@@ -28,7 +28,7 @@ fun=$(pos_get_variable function --from-loop)
 txbuffer=$(pos_get_variable txbuffer --from-loop)
 rxbuffer=$(pos_get_variable rxbuffer --from-loop)
 verifybuffer=$(pos_get_variable verifybuffer --from-loop)
-comp="clang++-17"
+comp="clang++-15"
 
 timerf="%M (Maximum resident set size in kbytes)\n\
 %e (Elapsed wall clock time in seconds)\n\

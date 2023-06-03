@@ -42,7 +42,7 @@ apt update -y
 wget https://apt.llvm.org/llvm.sh
 chmod +x llvm.sh
 ./llvm.sh -y 17
-apt install -y clang-17 gcc-12 g++-12
+apt install -y clang-15 gcc-12 g++-12
 # apt install -y gcc-12 g++-12
 
 
