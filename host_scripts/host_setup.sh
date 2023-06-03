@@ -42,7 +42,7 @@ echo 'deb http://deb.debian.org/debian testing main' > /etc/apt/sources.list.d/t
 apt update -y
 wget https://apt.llvm.org/llvm.sh
 chmod +x llvm.sh
-./llvm.sh -y 17
+./llvm.sh -y 15
 # apt install -y clang-15 gcc-12 g++-12
 apt install -y gcc-12 g++-12
 
