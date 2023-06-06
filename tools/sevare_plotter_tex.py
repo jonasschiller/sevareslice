@@ -50,7 +50,7 @@ def get_Specs(path):
 
 # Is used to generate the axis labels of plots
 def get_name(prefix_):
-    prefix_names = ["Datatype [bits]", "Threads", "txBuffer", "rxBuffer", "verifybuffer"] # Adaptions
+    prefix_names = ["Bits per Register", "Processes", "Sendbuffer", "Receivebuffer", "Hashbuffer"] # Adaptions
     prefix_names += ["Latency [ms]", "Bandwidths [Mbit/s]", "Packet Loss [%]", "Frequency [GHz]", "Quotas [%]",
                     "CPU Threads", "Input Size"]  # Axis names
     prefixes_ = ["Dtp_", "Thd_", "txB_", "rxB_", "vhB_"] # Adaptions
