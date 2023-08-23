@@ -67,25 +67,25 @@ else
 fi
 
 {
-    echo "./Scripts/config.sh -p $player -n $size -d $datatype -s $protocol -e $preprocess -h $ssl -x $comp"
+    echo "./scripts/config.sh -p $player -n $size -d $datatype -s $protocol -e $preprocess -h $ssl -x $comp"
 
     # set config and compile experiment
     if [ "$splitroles" -eq 0 ]; then
-        /bin/time -f "$timerf" ./Scripts/config.sh -p "$player" -n "$size" -d "$datatype" -x "$comp" \
+        /bin/time -f "$timerf" ./scripts/config.sh -p "$player" -n "$size" -d "$datatype" -x "$comp" \
             -s "$protocol" -e "$preprocess" -c "$packbool" -o "$optshare" -h "$ssl" -b 25000 \
             -j "$threads" -f "$fun" -y "$txbuffer" -z "$rxbuffer" -m "$verifybuffer"
     else
         # with splitroles active, "-p 3" would through error. Omit -p as unneeded
-        /bin/time -f "$timerf" ./Scripts/config.sh -n "$size" -d "$datatype" -x "$comp" \
+        /bin/time -f "$timerf" ./scripts/config.sh -n "$size" -d "$datatype" -x "$comp" \
             -s "$protocol" -e "$preprocess" -c "$packbool" -o "$optshare" -h "$ssl" -b 25000 \
             -j "$threads" -f "$fun" -y "$txbuffer" -z "$rxbuffer" -m "$verifybuffer"
     fi
     
-    [ "$splitroles" -eq 1 ] && ./Scripts/split-roles-3-compile.sh -p "$player" -a "$ipA" -b "$ipB" -x "$comp"
-    [ "$splitroles" -eq 2 ] && ./Scripts/split-roles-3to4-compile.sh -p "$player" -a "$ipA" -b "$ipB" -c "$ipC" -d "$ipD" -x "$comp"
-    [ "$splitroles" -eq 3 ] && ./Scripts/split-roles-4-compile.sh -p "$player" -a "$ipA" -b "$ipB" -c "$ipC" -d "$ipD" -x "$comp"
+    [ "$splitroles" -eq 1 ] && ./scripts/split-roles-3-compile.sh -p "$player" -a "$ipA" -b "$ipB" -x "$comp"
+    [ "$splitroles" -eq 2 ] && ./scripts/split-roles-3to4-compile.sh -p "$player" -a "$ipA" -b "$ipB" -c "$ipC" -d "$ipD" -x "$comp"
+    [ "$splitroles" -eq 3 ] && ./scripts/split-roles-4-compile.sh -p "$player" -a "$ipA" -b "$ipB" -c "$ipC" -d "$ipD" -x "$comp"
     
-    echo "$(du -BM search-P* | cut -d 'M' -f 1 | head -n 1) (Binary file size in MiB)"
+    echo "$(du -BM run-P* | cut -d 'M' -f 1 | head -n 1) (Binary file size in MiB)"
 
 } |& tee testresults
 
@@ -139,17 +139,17 @@ pos_sync --timeout 300
 if [ "$splitroles" -eq 0 ]; then 
     if [ "$protocol" -lt 7 ]; then
         if [ "$player" -lt 3 ]; then
-            /bin/time -f "$timerf" timeout 420s ./search-P"$player".o "$ipA" "$ipB" &>> testresults || success=false
+            /bin/time -f "$timerf" timeout 420s ./run-P"$player".o "$ipA" "$ipB" &>> testresults || success=false
         fi
     else
-        /bin/time -f "$timerf" timeout 420s ./search-P"$player".o "$ipA" "$ipB" "$ipC" &>> testresults || success=false
+        /bin/time -f "$timerf" timeout 420s ./run-P"$player".o "$ipA" "$ipB" "$ipC" &>> testresults || success=false
     fi
 elif [ "$splitroles" -eq 1 ] && [ "$player" -lt 3 ]; then
-    /bin/time -f "$timerf" timeout 420s ./Scripts/split-roles-3-execute.sh -p "$player" -a "$ipA" -b "$ipB" &>> testresults || success=false
+    /bin/time -f "$timerf" timeout 420s ./scripts/split-roles-3-execute.sh -p "$player" -a "$ipA" -b "$ipB" &>> testresults || success=false
 elif [ "$splitroles" -eq 2 ]; then
-    /bin/time -f "$timerf" timeout 420s ./Scripts/split-roles-3to4-execute.sh -p "$player" -a "$ipA" -b "$ipB" -c "$ipC" -d "$ipD" &>> testresults || success=false
+    /bin/time -f "$timerf" timeout 420s ./scripts/split-roles-3to4-execute.sh -p "$player" -a "$ipA" -b "$ipB" -c "$ipC" -d "$ipD" &>> testresults || success=false
 elif [ "$splitroles" -eq 3 ]; then
-    /bin/time -f "$timerf" timeout 420s ./Scripts/split-roles-4-execute.sh -p "$player" -a "$ipA" -b "$ipB" -c "$ipC" -d "$ipD" &>> testresults || success=false
+    /bin/time -f "$timerf" timeout 420s ./scripts/split-roles-4-execute.sh -p "$player" -a "$ipA" -b "$ipB" -c "$ipC" -d "$ipD" &>> testresults || success=false
 fi
 
 # divide external runtime x*j
