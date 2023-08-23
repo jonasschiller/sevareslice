@@ -59,8 +59,14 @@ checkConnection "github.com"
 git clone "$REPO" "$REPO_DIR"
 git clone "$REPO2" "$REPO2_DIR"
 
+
+cd "$REPO2_DIR"
+git checkout hpmpc
+cd ..
+
 # load custom htop config
 mkdir -p .config/htop
+
 cp "$REPO2_DIR"/helpers/htoprc ~/.config/htop/
 
 cd "$REPO_DIR"
