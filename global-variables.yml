@@ -71,18 +71,20 @@ yieldlyNIC2: ens7f1
 # zoneNIC2: enp193s0f1
 
 # NEW TOPOLOGY
-algofiNIC0: enp195s0f1
-algofiNIC1: enp193s0f1
-algofiNIC2: enp195s0f0
-gardNIC0: enp195s0f1
-gardNIC1: enp193s0f1
-gardNIC2: enp195s0f0
-goracleNIC0: enp193s0f1
-goracleNIC1: enp195s0f0
-goracleNIC2: enp195s0f1
-zoneNIC0: enp195s0f1
-zoneNIC1: enp193s0f1
-zoneNIC2: enp195s0f0
+algofiNIC0: enp195s0f1    # To Gard
+algofiNIC1: enp195s0f0    # To Goracle
+algofiNIC2: enp193s0f1    # To Zone
+gardNIC0: enp195s0f1      # To Algofi
+gardNIC1: enp193s0f1      # To Goracle
+gardNIC2: enp195s0f0      # To Zone
+goracleNIC0: enp195s0f1   # To Algofi
+goracleNIC1: enp193s0f1   # To Gard
+goracleNIC2: enp195s0f0   # To Zone
+zoneNIC0: enp193s0f1      # To Algofi
+zoneNIC1: enp195s0f0      # To Gard
+zoneNIC2: enp195s0f1      # To Goracle
+
+
 
 
 
