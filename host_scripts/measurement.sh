@@ -183,10 +183,6 @@ if [ "$splitroles" -gt 0 ] || [ "$threads" -gt 1 ]; then
         average=$(echo "scale=6;$max / $divisorExt" | bc -l)
     echo "Time measured to perform preprocessing chrono: ${average}s" &>> testresults
     fi
-P0: Time measured to initialize program: 0.004091s
-P0: Time measured to perform computation clock: 0.000599s
-P0: Time measured to perform computation getTime: 0.000157s
-P0: Time measured to perform computation chrono: 0.000147s
 
     # sum=$(grep "computation clock" testresults | cut -d 's' -f 2 | awk '{print $6}' | paste -s -d+ | bc)
     sum=$(grep "computation clock" testresults | awk -F': ' '{print $3}' | tr -d 's' | paste -s -d+ | bc)
