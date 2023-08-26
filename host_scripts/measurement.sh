@@ -178,20 +178,27 @@ if [ "$splitroles" -gt 0 ] || [ "$threads" -gt 1 ]; then
         # sum=$(grep "preprocessing chrono" testresults | cut -d 's' -f 4 | awk '{print $3}' | paste -s -d+ | bc)
         # average=$(echo "scale=6;$sum / $divisor" | bc -l)
     # echo "Time measured to perform preprocessing chrono: ${average}s" &>> testresults
-    max=$(grep "preprocessing chrono" testresults | cut -d 's' -f 4 | awk '{print $3}' | sort -nr | head -1) 
+    max=$(grep "preprocessing chrono" testresults | awk -F': ' '{print $3}' | tr -d 's' | sort -nr | head -1)
+    # max=$(grep "preprocessing chrono" testresults | cut -d 's' -f 4 | awk '{print $3}' | sort -nr | head -1) 
         average=$(echo "scale=6;$max / $divisorExt" | bc -l)
     echo "Time measured to perform preprocessing chrono: ${average}s" &>> testresults
     fi
+P0: Time measured to initialize program: 0.004091s
+P0: Time measured to perform computation clock: 0.000599s
+P0: Time measured to perform computation getTime: 0.000157s
+P0: Time measured to perform computation chrono: 0.000147s
 
-    sum=$(grep "computation clock" testresults | cut -d 's' -f 2 | awk '{print $6}' | paste -s -d+ | bc)
+    # sum=$(grep "computation clock" testresults | cut -d 's' -f 2 | awk '{print $6}' | paste -s -d+ | bc)
+    sum=$(grep "computation clock" testresults | awk -F': ' '{print $3}' | tr -d 's' | paste -s -d+ | bc)
     average=$(echo "scale=6;$sum / $divisor" | bc -l)
     echo "Time measured to perform computation clock: ${average}s" &>> testresults
 
-    sum=$(grep "computation getTime" testresults | cut -d 's' -f 2 | awk '{print $6}' | paste -s -d+ | bc)
+    sum=$(grep "computation getTime" testresults | awk -F': ' '{print $3}' | tr -d 's' | paste -s -d+ | bc)
     average=$(echo "scale=6;$sum / $divisor" | bc -l)
     echo "Time measured to perform computation getTime: ${average}s" &>> testresults
 
-max=$(grep "computation chrono" testresults | cut -d 's' -f 2 | awk '{print $6}' | sort -nr | head -1)
+    max=$(grep "computation chrono" testresults | awk -F': ' '{print $3}' | tr -d 's' | sort -nr | head -1)
+# max=$(grep "computation chrono" testresults | cut -d 's' -f 2 | awk '{print $6}' | sort -nr | head -1)
     average=$(echo "scale=6;$max / $divisorExt" | bc -l)
     echo "Time measured to perform computation chrono: ${average}s" &>> testresults
 # sum=$(grep "computation chrono" testresults | cut -d 's' -f 2 | awk '{print $6}' | paste -s -d+ | bc)
