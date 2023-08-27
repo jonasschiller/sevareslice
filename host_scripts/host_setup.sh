@@ -59,6 +59,10 @@ checkConnection "github.com"
 git clone "$REPO" "$REPO_DIR"
 git clone "$REPO2" "$REPO2_DIR"
 
+cd "$REPO2_DIR"
+git checkout fix
+cd ..
+
 # load custom htop config
 mkdir -p .config/htop
 cp "$REPO2_DIR"/helpers/htoprc ~/.config/htop/
@@ -69,7 +73,7 @@ cd "$REPO_DIR"
 ###git checkout "$REPO_COMMIT"
 
 # switch to fork
-git checkout experimental
+git checkout extended
 
 # adjust script to specific needs
 echo "wait" >> Scripts/split-roles-3-execute.sh
