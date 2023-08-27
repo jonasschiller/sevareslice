@@ -152,11 +152,11 @@ In `host_scripts\measurement.sh`:
 ```
         # set config and compile experiment
         if [ "$splitroles" -eq 0 ]; then
-            /bin/time -f "$timerf" ./Scripts/config.sh -p "$player" -n "$size" -d "$datatype" \
+            /bin/time -f "$timerf" ./scripts/config.sh -p "$player" -n "$size" -d "$datatype" \
                 -s "$protocol" -e "$preprocess" -c "$packbool" -o "$optshare" -h "$ssl" -b 25000
         else
             # with splitroles active, "-p 3" would through error. Omit -p as unneeded
-            /bin/time -f "$timerf" ./Scripts/config.sh -n "$size" -d "$datatype" \
+            /bin/time -f "$timerf" ./scripts/config.sh -n "$size" -d "$datatype" \
                 -s "$protocol" -e "$preprocess" -c "$packbool" -o "$optshare" -h "$ssl" -b 25000
         fi
 ```
@@ -169,7 +169,7 @@ if [ "$splitroles" == 0 ]; then
     /bin/time -f "$timerf" ./search-P"$player".o "$ipA" "$ipB" -h "$ssl" &>> testresults || success=false
 else
     ...
-    ./Scripts/split-roles.sh -p "$player" -a "$ipA" -b "$ipB" -h "$ssl" &>> testresults || success=false
+    ./scripts/split-roles.sh -p "$player" -a "$ipA" -b "$ipB" -h "$ssl" &>> testresults || success=false
 ```
 
 Verify functionality:
@@ -336,7 +336,7 @@ In `host_scripts\measurement.sh`:
 
 ```
         # set config and compile experiment
-        /bin/time -f "$timerf" ./Scripts/config.sh -p "$player" -n "$size" -d "$datatype" \
+        /bin/time -f "$timerf" ./scripts/config.sh -p "$player" -n "$size" -d "$datatype" \
             -s "$protocol" -e "$preprocess" -c "$packbool" -o "$optshare" -h "$ssl" -b 25000 \
             -j "$threads"
 ```
@@ -349,7 +349,7 @@ if [ "$splitroles" == 0 ]; then
     /bin/time -f "$timerf" ./search-P"$player".o "$ipA" "$ipB" -j "$threads" &>> testresults || success=false
 else
     ...
-    ./Scripts/split-roles.sh -p "$player" -a "$ipA" -b "$ipB" -j "$threads" &>> testresults || success=false
+    ./scripts/split-roles.sh -p "$player" -a "$ipA" -b "$ipB" -j "$threads" &>> testresults || success=false
 ```
 
 Verify functionality:
