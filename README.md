@@ -166,7 +166,7 @@ In `host_scripts\measurement.sh`:
 ```
 # run the SMC protocol
 if [ "$splitroles" == 0 ]; then
-    /bin/time -f "$timerf" ./search-P"$player".o "$ipA" "$ipB" -h "$ssl" &>> testresults || success=false
+    /bin/time -f "$timerf" ./run-P"$player".o "$ipA" "$ipB" -h "$ssl" &>> testresults || success=false
 else
     ...
     ./scripts/split-roles.sh -p "$player" -a "$ipA" -b "$ipB" -h "$ssl" &>> testresults || success=false
@@ -346,7 +346,7 @@ In `host_scripts\measurement.sh`:
 ```
 # run the SMC protocol
 if [ "$splitroles" == 0 ]; then
-    /bin/time -f "$timerf" ./search-P"$player".o "$ipA" "$ipB" -j "$threads" &>> testresults || success=false
+    /bin/time -f "$timerf" ./run-P"$player".o "$ipA" "$ipB" -j "$threads" &>> testresults || success=false
 else
     ...
     ./scripts/split-roles.sh -p "$player" -a "$ipA" -b "$ipB" -j "$threads" &>> testresults || success=false
