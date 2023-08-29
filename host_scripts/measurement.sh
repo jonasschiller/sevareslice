@@ -85,7 +85,7 @@ fi
     [ "$splitroles" -eq 2 ] && ./scripts/split-roles-3to4-compile.sh -p "$player" -a "$ipA" -b "$ipB" -c "$ipC" -d "$ipD" -x "$comp"
     [ "$splitroles" -eq 3 ] && ./scripts/split-roles-4-compile.sh -p "$player" -a "$ipA" -b "$ipB" -c "$ipC" -d "$ipD" -x "$comp"
     
-    echo "$(du -BM search-P* | cut -d 'M' -f 1 | head -n 1) (Binary file size in MiB)"
+    echo "$(du -BM run-P* | cut -d 'M' -f 1 | head -n 1) (Binary file size in MiB)"
 
 } |& tee testresults
 
