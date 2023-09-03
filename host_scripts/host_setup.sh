@@ -47,6 +47,7 @@ apt install -y automake build-essential git libboost-dev libboost-thread-dev par
 echo 'deb http://deb.debian.org/debian testing main' > /etc/apt/sources.list.d/testing.list
 apt update -y
 apt install -y gcc-12 g++-12
+apt install libeigen3-dev
 # wget https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.4/clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz
 # tar -xvf clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04.tar.xz
 # mv clang+llvm-16.0.4-x86_64-linux-gnu-ubuntu-22.04 /usr/local/llvm-16
