@@ -108,7 +108,8 @@ def genTex(tex_name, exp_prefix, plots, name, constellation, datatypemode=0):
             divisor = plots[g].split("/")[1][1:]
             # this is for the special case where x axis shows the datatype bits, need to divide each y value by the x value
             divisor = divisor if divisor != "all" else r"\thisrowno{0}"
-            dtypeNorm =  r" [y expr= 0.01 / (\thisrowno{1} / " + divisor + ")] "
+            # dtypeNorm =  r" [y expr= 0.01 / (\thisrowno{1} / " + divisor + ")] "
+            dtypeNorm =  r" [y expr= (\thisrowno{1} / " + divisor + ")] "
             indentor(file, 3, r"\addplot[mark=|, thick, color=" + colors[g] + "] table" + dtypeNorm + " {" + plotpath + "};")
         
         mode = 1 if datatypemode else 0
@@ -180,7 +181,8 @@ for plot in plots:
     datatypes.append(plot.split("_")[0]) if plot.split("_")[0] != "dall" else None
     prefixes.append(plot.split("_")[1])
     constellation = {}
-    for switch, position in re.findall(r'([A-Za-z]+)([0123456789])', plot.split("_")[2][:-4]):
+    # Updated the regular expression pattern to capture multi-digit positions
+    for switch, position in re.findall(r'([A-Za-z]+)([0-9]+)', plot.split("_")[2][:-4]):
         constellation[switch] = position
     constellations.append(constellation)
 
