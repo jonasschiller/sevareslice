@@ -102,8 +102,8 @@ for i in range(len(header)):
             switch_indexes[j] = i
     if header[i] == "runtime_external(s)":  # Name from the table
         runtime_index = i
-    # if header[i] == "runtime_chrono(s)":  # Name from the table
-    #     runtime_index = i
+    if header[i] == "runtime_chrono(s)":  # Name from the table
+        runtime_index = i
     elif header[i] == "protocol":  # Name from the table
         protocol_index = i
     # Sorting index
