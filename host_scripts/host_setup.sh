@@ -77,7 +77,7 @@ cd "$REPO_DIR"
 # git checkout extended
 git checkout NN
 
-git clone hppts://github.com/chart21/flexNN
+git clone https://github.com/chart21/flexNN.git
 mv flexNN SimpleNN
 cd SimpleNN
 git checkout hpmpc
