@@ -139,17 +139,17 @@ pos_sync --timeout 300
 if [ "$splitroles" -eq 0 ]; then 
     if [ "$protocol" -lt 7 ]; then
         if [ "$player" -lt 3 ]; then
-            /bin/time -f "$timerf" timeout 420s ./run-P"$player".o "$ipA" "$ipB" &>> testresults || success=false
+            /bin/time -f "$timerf" timeout 1000s ./run-P"$player".o "$ipA" "$ipB" &>> testresults || success=false
         fi
     else
-        /bin/time -f "$timerf" timeout 420s ./run-P"$player".o "$ipA" "$ipB" "$ipC" &>> testresults || success=false
+        /bin/time -f "$timerf" timeout 1000s ./run-P"$player".o "$ipA" "$ipB" "$ipC" &>> testresults || success=false
     fi
 elif [ "$splitroles" -eq 1 ] && [ "$player" -lt 3 ]; then
-    /bin/time -f "$timerf" timeout 420s ./scripts/split-roles-3-execute.sh -p "$player" -a "$ipA" -b "$ipB" &>> testresults || success=false
+    /bin/time -f "$timerf" timeout 1000s ./scripts/split-roles-3-execute.sh -p "$player" -a "$ipA" -b "$ipB" &>> testresults || success=false
 elif [ "$splitroles" -eq 2 ]; then
-    /bin/time -f "$timerf" timeout 420s ./scripts/split-roles-3to4-execute.sh -p "$player" -a "$ipA" -b "$ipB" -c "$ipC" -d "$ipD" &>> testresults || success=false
+    /bin/time -f "$timerf" timeout 1000s ./scripts/split-roles-3to4-execute.sh -p "$player" -a "$ipA" -b "$ipB" -c "$ipC" -d "$ipD" &>> testresults || success=false
 elif [ "$splitroles" -eq 3 ]; then
-    /bin/time -f "$timerf" timeout 420s ./scripts/split-roles-4-execute.sh -p "$player" -a "$ipA" -b "$ipB" -c "$ipC" -d "$ipD" &>> testresults || success=false
+    /bin/time -f "$timerf" timeout 1000s ./scripts/split-roles-4-execute.sh -p "$player" -a "$ipA" -b "$ipB" -c "$ipC" -d "$ipD" &>> testresults || success=false
 fi
 
 # divide external runtime x*j
