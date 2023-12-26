@@ -77,6 +77,11 @@ cd "$REPO_DIR"
 # git checkout extended
 git checkout NN
 
+git clone hppts://github.com/chart21/flexNN
+mv flexNN SimpleNN
+cd SimpleNN
+git checkout hpmpc
+
 # adjust script to specific needs
 echo "wait" >> ./scripts/split-roles-3-execute.sh
 echo "wait" >> ./scripts/split-roles-3to4-execute.sh
