@@ -81,7 +81,7 @@ fi
             -j "$threads" -f "$fun" -y "$txbuffer" -z "$rxbuffer" -m "$verifybuffer"
     fi
     
-    [ "$splitroles" -eq 1 ] && ./scripts/split-roles-3-compile.sh -p "$player" -a "$ipA" -b "$ipB" -x "$comp"
+    [ "$splitroles" -eq 1 ] && ./scripts/split-roles-3-compile.sh -p "$player" -a "$ipA" -b "$ipB" -c "$ipC" -x "$comp"
     [ "$splitroles" -eq 2 ] && ./scripts/split-roles-3to4-compile.sh -p "$player" -a "$ipA" -b "$ipB" -c "$ipC" -d "$ipD" -x "$comp"
     [ "$splitroles" -eq 3 ] && ./scripts/split-roles-4-compile.sh -p "$player" -a "$ipA" -b "$ipB" -c "$ipC" -d "$ipD" -x "$comp"
     
