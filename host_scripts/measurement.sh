@@ -132,7 +132,7 @@ esac
 
 success=true
 
-pos_sync --timeout 300
+pos_sync --timeout 600
 
 # run the SMC protocol
                               # skip 4th node here
