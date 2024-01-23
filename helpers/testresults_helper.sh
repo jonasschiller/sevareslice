@@ -45,6 +45,7 @@ exportNNExperimentResults()
     nntable="$EXPORTPATH/data/nn_results.csv"
     mkdir -p "$EXPORTPATH/data"
     rm -rf "$nntable"
+    counter=0
 
     loopinfo=$(find "$resultpath" -name "*loop*" -print -quit)
 
@@ -55,7 +56,8 @@ exportNNExperimentResults()
     fi
     
     while [ -n "$loopinfo" ]; do
-    nn_parse "$loopinfo" "$nntable"
+    nn_parse "$loopinfo" "$nntable"+"$counter"+".csv"
+    ((++counter))
     ((++i))
     loopinfo=$(find "$resultpath" -name "*$i.loop*" -print -quit)
     done
