@@ -40,6 +40,7 @@ for dir in $1; do
 
     echo "  exporting measurement results to $EXPORTPATH..."
     # create and push Result Plots  
+    exportNNExperimentResults
     exportExperimentResults
 
     cp "$SUMMARYFILE" "$EXPORTPATH/"
