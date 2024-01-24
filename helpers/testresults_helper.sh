@@ -40,29 +40,6 @@ verifyExperiment() {
 
 }
 
-exportNNExperimentResults()
-{
-    nntable="$EXPORTPATH/data/nn_results.csv"
-    mkdir -p "$EXPORTPATH/data"
-    rm -rf "$nntable"
-    counter=0
-
-    loopinfo=$(find "$resultpath" -name "*loop*" -print -quit)
-
-    # check if loop file exists
-    if [ -z "$loopinfo" ]; then
-        okfail fail "nothing to export - no loop file found"
-        return
-    fi
-    
-    while [ -n "$loopinfo" ]; do
-    nn_parse "$loopinfo" "$nntable"+"$counter"+".csv"
-    ((++counter))
-    ((++i))
-    loopinfo=$(find "$resultpath" -name "*$i.loop*" -print -quit)
-    done
-}
-
 ############
 # Export experiment data from the pos_upload-ed logs into two tables
 ############
