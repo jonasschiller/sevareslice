@@ -24,13 +24,13 @@ groupsize=${#nodes[*]}
 
 # driver for Intel Network Adapter for E810 100G card
 installDriver() {
-	wget https://downloadmirror.intel.com/763930/ice-1.10.1.2.2.tar.gz
-	tar -xf ice-1.10.1.2.2.tar.gz
-	cd ice-1.10.1.2.2/src/
+	wget https://downloadmirror.intel.com/812404/ice-1.13.7.tar.gz
+	tar -xf ice-1.13.7.tar.gz
+	cd ice-1.13.7/src/
 	make install &> makelog || true
 	cd ..
 	mkdir -p /lib/firmware/updates/intel/ice/ddp/
-	cp ddp/ice-1.3.30.0.pkg /lib/firmware/updates/intel/ice/ddp/
+	cp ddp/ice-1.3.35.0.pkg /lib/firmware/updates/intel/ice/ddp/
 	modprobe -r ice
 	modprobe ice
 }
@@ -88,6 +88,8 @@ if [ "$nic1" != 0 ] && [ "$nic2" != 0 ]; then
 	highspeed=$(hostname | grep -cE "idex|meld|tinyman|yieldly|algofi|gard|goracle|zone")
 	[ "$highspeed" -eq 1 ] && installDriver
 
+	sleep 20
+
 	# verify that nodes array is circularly sorted
 	# this is required for the definition of this topology
 	
@@ -123,6 +125,8 @@ elif [ "$nic1" != 0 ]; then
 	# to achieve high speeds, install ddp drivers
 	highspeed=$(hostname | grep -cE "idex|meld|tinyman|yieldly|algofi|gard|goracle|zone")
 	[ "$highspeed" -eq 1 ] && installDriver
+
+	sleep 20
 
 	# verify that nodes array is circularly sorted
 	# this is required for the definition of this topology
