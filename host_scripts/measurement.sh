@@ -183,6 +183,7 @@ divisorExt=1
     max=$(grep "preprocessing chrono" testresults | cut -d 's' -f 4 | awk '{print $3}' | sort -nr | head -1) 
         average=$(echo "scale=6;$max / $divisorExt" | bc -l)
     echo "Time measured to perform preprocessing chrono: ${average}s" &>> testresults
+    fi
 
     sum=$(grep "computation clock" testresults | cut -d 's' -f 2 | awk '{print $6}' | paste -s -d+ | bc)
     average=$(echo "scale=6;$sum / $divisor" | bc -l)
@@ -203,7 +204,6 @@ max=$(grep "computation chrono" testresults | cut -d 's' -f 2 | awk '{print $6}'
     average=$(echo "scale=6;$runtimeext / $divisorExt" | bc -l)
     echo "$average (Elapsed wall clock time in seconds)" &>> testresults
 
-fi
 
 pos_sync
 
