@@ -155,13 +155,15 @@ fi
 # divide external runtime x*j
 # Todo: divide normal binary run by j*j
 
-# do calculations if splitroles is active or more threads are used
-if [ "$splitroles" -gt 0 ] || [ "$threads" -gt 1 ]; then
 
     # binary:   calculate mean of j results running concurrent ( /j *j )
     # 3nodes:   calculate mean of 6*j results running concurrent ( /6*j *6*j )
     # 3-4nodes: calculate mean of 24*j results running concurrent ( /24*j *24*j )
     # 4nodes:   calculate mean of 24*j results running concurrent ( /24*j *24*j )
+#default divisor
+divisor=1
+divisorExt=1
+    
     [ "$splitroles" -eq 0 ] && divisor=$((threads*threads)) && divisorExt=$((threads))
     [ "$splitroles" -eq 1 ] && divisor=$((6*6*threads*threads)) && divisorExt=$((6*threads))
     [ "$splitroles" -eq 2 ] && divisor=$((24*24*threads*threads)) && divisorExt=$((24*threads))
@@ -181,7 +183,6 @@ if [ "$splitroles" -gt 0 ] || [ "$threads" -gt 1 ]; then
     max=$(grep "preprocessing chrono" testresults | cut -d 's' -f 4 | awk '{print $3}' | sort -nr | head -1) 
         average=$(echo "scale=6;$max / $divisorExt" | bc -l)
     echo "Time measured to perform preprocessing chrono: ${average}s" &>> testresults
-    fi
 
     sum=$(grep "computation clock" testresults | cut -d 's' -f 2 | awk '{print $6}' | paste -s -d+ | bc)
     average=$(echo "scale=6;$sum / $divisor" | bc -l)
