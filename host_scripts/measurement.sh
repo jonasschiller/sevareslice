@@ -97,6 +97,10 @@ echo -e "\n========\n" >> testresults
 # shellcheck source=../host_scripts/manipulate.sh
 source "$REPO2_DIR"/host_scripts/manipulate.sh
 
+if [[ "${types[*]}" == *" LATENCY=0 "* ]]; then
+    types=("${types[@]/LATENCY}")
+fi
+
 case " ${types[*]} " in
     *" CPUS "*)
         limitCPUs;;&
@@ -110,7 +114,12 @@ case " ${types[*]} " in
         # check whether to manipulate a combination
         case " ${types[*]} " in
             *" LATENCIES "*)
+            case " ${types[*]} " in
+                *" PACKETDROPS "*)
+                    setAllParameters;;
+                *)
                 setLatencyBandwidth;;
+            esac;;                 
             *" PACKETDROPS "*) # a.k.a. packet loss
                 setBandwidthPacketdrop;;
             *)
@@ -125,7 +134,6 @@ case " ${types[*]} " in
     *" PACKETDROPS "*)
         setPacketdrop;;
 esac
-
 ####
 #  environment manipulation section stop
 ####
