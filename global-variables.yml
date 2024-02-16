@@ -1,10 +1,10 @@
-repo: https://github.com/chart21/hpmpc.git
+repo: https://github.com/jonasschiller/hpmpc.git
 repo_commit: f19aefd638ea7b3d90dcfb5024fdeed422e5f3b7
 repo_dir: /root/MP-Slice
-repo2: https://github.com/chart21/sevareslice.git
+repo2: https://github.com/jonasschiller/sevareslice.git
 # changing the repo_paths requires changing them in pos_helper.sh too
 repo2_dir: /root/sevarebench
-repoupload: git@github.com:chart21/sevaremeasurements.git
+repoupload: git@github.com:jonasschiller/sevaremeasurements.git
 
 #######
 ## Networking environment definitions
