@@ -58,10 +58,10 @@ meldNIC1: ens2f1
 meldNIC2: ens4f1
 tinymanNIC0: ens4f0
 tinymanNIC1: ens4f1
-tinymanNIC2: ens4f1
+tinymanNIC2: ens2f1
 yieldlyNIC0: ens2f1
 yieldlyNIC1: ens4f0
-yieldlyNIC2: ens2f1
+yieldlyNIC2: ens4f1
 
 ### 25G
 ##gardNIC0: enp194s0f0
