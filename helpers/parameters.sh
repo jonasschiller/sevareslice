@@ -397,7 +397,7 @@ parseConfig() {
             flag=$(echo "$sanline" | cut -d '=' -f 1)
             parameter=$(echo "$sanline" | cut -d '=' -f 2-)
             [ -n "$parameter" ] && config[$flag]="$parameter"
-            # for flags without parameter, cut returns the flag
+            # for flags without parameter, cut returns the flagl
             [ "$flag" == "$parameter" ] && config[$flag]=""
         done < "$conf"
 
