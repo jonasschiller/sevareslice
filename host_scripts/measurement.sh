@@ -116,7 +116,7 @@ case " ${types[*]} " in
             *" LATENCIES "*)
             case " ${types[*]} " in
                 *" PACKETDROPS "*)
-                    setAllParameters;;
+                    setAllParameters "$partysize";;
                 *)
                 setLatencyBandwidth;;
             esac;;                 
